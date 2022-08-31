@@ -1,0 +1,302 @@
+
+In [ ]:
+from google.colab import files
+uploaded = files.upload()
+Upload widget is only available when the cell has been executed in the current browser session. Please rerun this cell to enable.
+Saving train.csv to train.csv
+In [ ]:
+
+In [ ]:
+import pandas as pd
+import matplotlib .pyplot as plt
+import seaborn as sns
+import statistics
+In [ ]:
+df=pd.read_csv(r"/content/train.csv")
+/usr/local/lib/python3.7/dist-packages/IPython/core/interactiveshell.py:2882: DtypeWarning: Columns (15) have mixed types.Specify dtype option on import or set low_memory=False.
+  exec(code_obj, self.user_global_ns, self.user_ns)
+In [ ]:
+df.info()
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 929615 entries, 0 to 929614
+Data columns (total 24 columns):
+ #   Column                 Non-Null Count   Dtype  
+---  ------                 --------------   -----  
+ 0   fecha_dato             929615 non-null  object 
+ 1   ncodpers               929615 non-null  int64  
+ 2   ind_empleado           929615 non-null  object 
+ 3   pais_residencia        929615 non-null  object 
+ 4   sexo                   929610 non-null  object 
+ 5   age                    929615 non-null  int64  
+ 6   fecha_alta             929615 non-null  object 
+ 7   ind_nuevo              929615 non-null  int64  
+ 8   antiguedad             929615 non-null  int64  
+ 9   indrel                 929615 non-null  int64  
+ 10  ult_fec_cli_1t         1683 non-null    object 
+ 11  indrel_1mes            929592 non-null  float64
+ 12  tiprel_1mes            929592 non-null  object 
+ 13  indresi                929615 non-null  object 
+ 14  indext                 929615 non-null  object 
+ 15  conyuemp               104 non-null     object 
+ 16  canal_entrada          927534 non-null  object 
+ 17  indfall                929615 non-null  object 
+ 18  tipodom                929615 non-null  int64  
+ 19  cod_prov               925619 non-null  float64
+ 20  nomprov                925619 non-null  object 
+ 21  ind_actividad_cliente  929615 non-null  int64  
+ 22  renta                  929615 non-null  object 
+ 23  segmento               927367 non-null  object 
+dtypes: float64(2), int64(7), object(15)
+memory usage: 170.2+ MB
+In [ ]:
+df.describe()
+Out[ ]:
+ncodpers	age	ind_nuevo	antiguedad	indrel	indrel_1mes	tipodom	cod_prov	ind_actividad_cliente
+count	9.296150e+05	929615.000000	929615.000000	929615.000000	929615.000000	929592.000000	929615.0	925619.000000	929615.000000
+mean	8.794566e+05	40.249821	0.027849	77.728413	1.177422	1.000058	1.0	26.546150	0.425272
+std	4.481569e+05	17.185119	0.164541	1797.824518	4.166039	0.010779	0.0	12.836614	0.494384
+min	1.588900e+04	2.000000	0.000000	-999999.000000	1.000000	1.000000	1.0	1.000000	0.000000
+25%	4.833615e+05	25.000000	0.000000	23.000000	1.000000	1.000000	1.0	15.000000	0.000000
+50%	9.664250e+05	39.000000	0.000000	55.000000	1.000000	1.000000	1.0	28.000000	0.000000
+75%	1.264316e+06	51.000000	0.000000	136.000000	1.000000	1.000000	1.0	35.000000	1.000000
+max	1.553689e+06	164.000000	1.000000	257.000000	99.000000	3.000000	1.0	52.000000	1.000000
+In [ ]:
+sns.barplot(x= 'age',y= 'sexo' ,data= df)
+plt.show()
+
+In [ ]:
+sns.barplot(x= 'age', y= 'ind_nuevo',data=df)
+plt.show()
+
+In [ ]:
+corr = df.corr()
+In [ ]:
+corr
+Out[ ]:
+ncodpers	age	ind_nuevo	antiguedad	indrel	indrel_1mes	tipodom	cod_prov	ind_actividad_cliente
+ncodpers	1.000000	-0.603296	0.222253	-0.033687	0.030565	0.003686	NaN	-0.037311	-0.104326
+age	-0.603296	1.000000	-0.005839	0.020926	0.002663	0.002001	NaN	0.047955	0.121830
+ind_nuevo	0.222253	-0.005839	1.000000	-0.007008	0.070302	0.030643	NaN	-0.003772	0.078882
+antiguedad	-0.033687	0.020926	-0.007008	1.000000	-0.000960	-0.000226	NaN	0.001251	0.003080
+indrel	0.030565	0.002663	0.070302	-0.000960	1.000000	0.013861	NaN	-0.001354	-0.030492
+indrel_1mes	0.003686	0.002001	0.030643	-0.000226	0.013861	1.000000	NaN	0.000549	0.000613
+tipodom	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+cod_prov	-0.037311	0.047955	-0.003772	0.001251	-0.001354	0.000549	NaN	1.000000	0.027421
+ind_actividad_cliente	-0.104326	0.121830	0.078882	0.003080	-0.030492	0.000613	NaN	0.027421	1.000000
+In [ ]:
+sns.heatmap(corr)
+plt.show()
+
+In [ ]:
+
+we can see there is positive correlation between 'ind_actividad_cliente' and 'ncodpers'
+
+In [ ]:
+sns.scatterplot(x = 'age',y = 'ncodpers',data=df)
+plt.show()
+
+In [ ]:
+sns.pairplot(df)
+Out[ ]:
+<seaborn.axisgrid.PairGrid at 0x7faeba003a90>
+
+In [ ]:
+sns.boxplot(x = 'cod_prov',y = 'age', data = df)
+Out[ ]:
+<matplotlib.axes._subplots.AxesSubplot at 0x7fa03a9a67d0>
+
+Descriptive Statistical Analysis Let's first take a look at the variables by utilizing a description method.
+
+The describe function automatically computes basic statistics for all continuous variables. Any NaN values are automatically skipped in these statistics.
+
+This will show:
+
+the count of that variable the mean the standard deviation (std) the minimum value the IQR (Interquartile Range: 25%, 50% and 75%) the maximum value
+
+In [ ]:
+df.describe()
+Out[ ]:
+ncodpers	age	ind_nuevo	antiguedad	indrel	indrel_1mes	tipodom	cod_prov	ind_actividad_cliente
+count	9.296150e+05	929615.000000	929615.000000	929615.000000	929615.000000	929592.000000	929615.0	925619.000000	929615.000000
+mean	8.794566e+05	40.249821	0.027849	77.728413	1.177422	1.000058	1.0	26.546150	0.425272
+std	4.481569e+05	17.185119	0.164541	1797.824518	4.166039	0.010779	0.0	12.836614	0.494384
+min	1.588900e+04	2.000000	0.000000	-999999.000000	1.000000	1.000000	1.0	1.000000	0.000000
+25%	4.833615e+05	25.000000	0.000000	23.000000	1.000000	1.000000	1.0	15.000000	0.000000
+50%	9.664250e+05	39.000000	0.000000	55.000000	1.000000	1.000000	1.0	28.000000	0.000000
+75%	1.264316e+06	51.000000	0.000000	136.000000	1.000000	1.000000	1.0	35.000000	1.000000
+max	1.553689e+06	164.000000	1.000000	257.000000	99.000000	3.000000	1.0	52.000000	1.000000
+In [ ]:
+df['sexo'].value_counts()
+Out[ ]:
+V    504515
+H    425095
+Name: sexo, dtype: int64
+In [ ]:
+df['ind_empleado'].value_counts()
+Out[ ]:
+N    929096
+B       218
+F       152
+A       148
+S         1
+Name: ind_empleado, dtype: int64
+In [ ]:
+df['pais_residencia'].value_counts()
+Out[ ]:
+ES    925619
+FR       311
+AR       288
+GB       286
+DE       281
+       ...  
+IS         1
+TN         1
+TG         1
+DJ         1
+LV         1
+Name: pais_residencia, Length: 118, dtype: int64
+In [ ]:
+df['age'].value_counts()
+Out[ ]:
+24     50706
+23     49604
+22     47674
+21     46322
+25     41429
+       ...  
+114        6
+117        1
+164        1
+118        1
+127        1
+Name: age, Length: 118, dtype: int64
+In [ ]:
+df['antiguedad'].value_counts()
+Out[ ]:
+ 8         26335
+ 32        23415
+ 9         22972
+ 20        21108
+ 11        20420
+           ...  
+ 0           129
+ 257         102
+ 255          84
+ 256          77
+-999999        3
+Name: antiguedad, Length: 259, dtype: int64
+In [ ]:
+df['tiprel_1mes'].value_counts()
+Out[ ]:
+I    535943
+A    393622
+P        27
+Name: tiprel_1mes, dtype: int64
+In [ ]:
+df['canal_entrada'].value_counts()
+Out[ ]:
+KHE    251665
+KAT    205833
+KFC    200697
+KHQ     74969
+KHM     33384
+        ...  
+25          1
+KDI         1
+KDB         1
+KGN         1
+KDL         1
+Name: canal_entrada, Length: 162, dtype: int64
+In [ ]:
+df['nomprov'].value_counts()
+Out[ ]:
+MADRID                    298250
+BARCELONA                  88579
+VALENCIA                   47996
+SEVILLA                    40492
+CORUÑA, A                  28715
+MURCIA                     27752
+MALAGA                     24546
+ZARAGOZA                   23160
+ALICANTE                   22147
+CADIZ                      19795
+PONTEVEDRA                 18961
+ASTURIAS                   18300
+PALMAS, LAS                16332
+VALLADOLID                 16018
+BADAJOZ                    12936
+TOLEDO                     12658
+BIZKAIA                    12494
+GRANADA                    12392
+SALAMANCA                  11071
+CANTABRIA                  10824
+CORDOBA                     9831
+BALEARS, ILLES              9130
+CACERES                     8598
+CIUDAD REAL                 8075
+HUELVA                      8018
+ALBACETE                    7780
+TARRAGONA                   7631
+CASTELLON                   7145
+BURGOS                      6645
+GIRONA                      6304
+NAVARRA                     6010
+RIOJA, LA                   5806
+LEON                        5717
+LUGO                        5656
+OURENSE                     5605
+LERIDA                      5430
+SANTA CRUZ DE TENERIFE      5097
+GIPUZKOA                    4869
+GUADALAJARA                 4678
+JAEN                        4496
+ALMERIA                     4307
+CUENCA                      3788
+ZAMORA                      3430
+PALENCIA                    3311
+SEGOVIA                     2881
+HUESCA                      2789
+AVILA                       2628
+ALAVA                       2591
+TERUEL                      1538
+SORIA                       1261
+MELILLA                      643
+CEUTA                        513
+Name: nomprov, dtype: int64
+In [ ]:
+df['ind_actividad_cliente'].value_counts()
+Out[ ]:
+0    534276
+1    395339
+Name: ind_actividad_cliente, dtype: int64
+In [ ]:
+df['segmento'].value_counts()
+Out[ ]:
+02 - PARTICULARES     545378
+03 - UNIVERSITARIO    346028
+01 - TOP               35961
+Name: segmento, dtype: int64
+In [ ]:
+group_one= df[['cod_prov','renta','antiguedad']]
+In [ ]:
+# grouping results 
+group_one = group_one.groupby(['renta'], as_index = False).mean()
+group_one
+Out[ ]:
+renta	cod_prov	antiguedad
+0	NA	26.881463	51.176900
+1	100000.02	37.000000	55.000000
+2	100000.35	28.000000	143.555556
+3	100000.41	41.000000	9.000000
+4	100000.44	15.000000	32.000000
+...	...	...	...
+516398	99998.61	36.000000	32.000000
+516399	99998.82	11.000000	29.000000
+516400	99999	43.000000	52.500000
+516401	99999.21	36.000000	57.000000
+516402	99999.78	28.000000	57.000000
+516403 rows × 3 columns
+
+In [ ]:
+
+In [ ]:
